@@ -74,7 +74,7 @@ es una posible mejora didáctica **futura**, registrada en el roadmap — no est
 - No se resuelve la ecuación de Schrödinger: es un modelo analítico,
   instantáneo y estable, a cambio de no mostrar la propagación de la onda.
 
-## Qué mostrar en la exposición (guión de 60 segundos)
+## Guión de demo (60 segundos)
 
 1. «Cada punto es UNA partícula. Nadie decide dónde cae.»
 2. Esperar a que emerja el patrón. «Esto es interferencia, sin ninguna onda dibujada.»

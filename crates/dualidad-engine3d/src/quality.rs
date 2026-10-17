@@ -1,5 +1,5 @@
 //! Calidad gráfica adaptativa: el simulador debe ir fluido también en
-//! máquinas sin GPU (render por software / Mesa), típicas en escuelas.
+//! máquinas sin GPU (render por software / Mesa), equipos modestos incluidos.
 //!
 //! Tres niveles. En modo automático el renderer mide los fps y baja de
 //! nivel si hace falta (y vuelve a subir solo con margen de sobra).

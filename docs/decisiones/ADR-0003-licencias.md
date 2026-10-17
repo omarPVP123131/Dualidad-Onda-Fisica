@@ -25,6 +25,6 @@ Copyright © 2026 Omar Palomares Velasco y Leonardo Miguel Vega Carbajal.
 
 ## Consecuencias
 - Quien distribuya versiones modificadas debe hacerlo bajo GPL-3.0-or-later, con fuente.
-- README y `LICENCIAS.md` declaran una sola licencia: sin ambigüedad para docentes o terceros.
-- Salvedad registrada: si la escuela/docente exige una condición propia,
-  prevalece esa exigencia; se verificará antes de la entrega (doc. 07 y 09).
+- README y `LICENCIAS.md` declaran una sola licencia: sin ambigüedad para terceros.
+- Salvedad retirada (2026-10-17): el proyecto pasó a ser personal, no escolar;
+  no existe requisito externo de licenciamiento.

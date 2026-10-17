@@ -17,8 +17,8 @@
 
 ## Referencias sugeridas
 
-> Verifiquen edición y formato contra lo que pida el docente; adapten al
-> estilo citado (APA, IEEE…) en el informe final.
+> Elijan una edición y un estilo de cita (APA, IEEE…) y manténganlo
+> consistente en toda la documentación.
 
 - Feynman et al. (2011). *The Feynman Lectures on Physics*, Vol. III —
   capítulos 1 y 2: la doble rendija explicada sin atajos. (Edición en línea gratuita, Caltech.)

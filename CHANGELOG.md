@@ -4,6 +4,27 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 Las versiones siguen [Versionado Semántico](https://semver.org/lang/es/) cuando
 el proyecto empiece a publicarlas.
 
+## [Sin publicar] — Proyecto personal (se retira el flujo escolar)
+
+### Cambiado
+
+- El proyecto se declara **personal**: se elimina todo el flujo escolar
+  (entrega, informe, docente, rúbrica, exposición).
+- Se retiran `docs/07-entrega-escolar.md` y
+  `docs/plantillas/informe-escolar.md`; README, índice, visión, roadmap,
+  riesgos, glosario, licencias, ADR-0003 y código de conducta quedan sin
+  referencias escolares.
+- `ESTADO-DEL-PROYECTO.md`: la fila de CI pasa a «activa» (lo estaba desde
+  v0.3.0), se retira la fila de entrega escolar y se reescriben los
+  siguientes pasos.
+- Licencia: retirada la salvedad «si el docente exige otra» (no hay
+  requisito externo).
+
+### Código
+
+- Solo un comentario en `crates/dualidad-engine3d/src/quality.rs`
+  («típicas en escuelas» → «equipos modestos incluidos»). Nada funcional.
+
 ## [Sin publicar] — Reorganización de estructura (crates/)
 
 Sin cambios de código: solo ubicaciones de archivos y documentación.
