@@ -108,11 +108,11 @@ Empieza por el índice: [`docs/00-indice.md`](docs/00-indice.md)
 .
 ├── Cargo.toml                # workspace: raíz virtual, sin paquete propio
 ├── Cargo.lock
-├── src/
+├── crates/
 │   ├── dualidad-core/        # crate: física N rendijas, presets, muestreo — sin gráficos
 │   ├── dualidad-engine3d/    # crate: cámara, escena 3D, panel de control, HUD y gráfica
 │   └── dualidad-app/         # crate: binario `dualidad` (entrada, teclado, bucle)
-├── docs/                     # documentación, roadmap, decisiones y plantillas
+├── docs/                     # documentación, roadmap, decisiones, histórico y plantillas
 ├── LICENSE                   # GPL-3.0 (texto oficial íntegro)
 └── LICENCIAS.md              # la licencia explicada en español claro
 ```

@@ -40,7 +40,8 @@ ADR-0003 y este archivo en el mismo cambio.
 
 ## Nota sobre el código fuente
 
-No se añadió la cabecera GPL dentro de `src/main.rs` porque el código quedó
+No se añadió la cabecera GPL dentro del prototipo congelado (hoy en
+`docs/historico/main-original-v0.1.0.rs`) porque el código quedó
 congelado por diseño (solo se autorizó renombrar `Cargo.toml`). La licencia
 aplica por el archivo `LICENSE` raíz. Si en el futuro retocan el código,
 pueden añadir la cabecera estándar de la FSF en cada archivo, opcional.

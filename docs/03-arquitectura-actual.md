@@ -1,14 +1,15 @@
 # 03 · Arquitectura actual (por crates)
 
-> Estado desde v0.2.0. El monolito original de 173 líneas se eliminó y se
-> reescribió en un **workspace Cargo por crates bajo `src/`**. La física y
-> los controles del prototipo se conservaron; la organización, no.
+> Estado desde v0.2.0; desde v0.7.x los crates viven en `crates/`. El monolito
+> original de 173 líneas se archivó en `docs/historico/main-original-v0.1.0.rs`
+> y se reescribió en un **workspace Cargo por crates bajo `crates/`**. La
+> física y los controles del prototipo se conservaron; la organización, no.
 
 ## Mapa del workspace
 
 ```
 Cargo.toml                      # workspace virtual (sin paquete raíz)
-src/
+crates/
 ├── dualidad-core/              # CRATE 1 · física pura, cero gráficos
 │   └── src/
 │       ├── params.rs           # SimulationParams y rangos (SI)
@@ -71,12 +72,12 @@ flowchart LR
 - RNG propio con semilla: reproducible en tests, distinta en cada sesión
   (la app siembra desde el reloj).
 
-## Tests (31, todos en verde)
+## Tests (41, todos en verde)
 
 | Crate | Qué cubre |
 |---|---|
-| dualidad-core (21) | I(x) con 1–N rendijas, de Broglie del electrón, presets, histograma, rangos, muestreo y emergencia del patrón |
-| dualidad-engine3d (11) | cámara, barrera, haces, malla de onda y autoajuste de calidad por fps |
+| dualidad-core (22) | I(x) con 1–N rendijas, de Broglie del electrón, presets, histograma, rangos, muestreo y emergencia del patrón |
+| dualidad-engine3d (18) | cámara, barrera, haces, malla de onda, autoajuste de calidad y vuelo de partículas |
 | dualidad-app (1) | saturación del ritmo de disparo |
 
 ```bash

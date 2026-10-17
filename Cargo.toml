@@ -1,11 +1,11 @@
 [workspace]
 resolver = "2"
 members = [
-    "src/dualidad-core",
-    "src/dualidad-engine3d",
-    "src/dualidad-app",
+    "crates/dualidad-core",
+    "crates/dualidad-engine3d",
+    "crates/dualidad-app",
 ]
-default-members = ["src/dualidad-app"]
+default-members = ["crates/dualidad-app"]
 
 [workspace.package]
 version = "0.7.0"

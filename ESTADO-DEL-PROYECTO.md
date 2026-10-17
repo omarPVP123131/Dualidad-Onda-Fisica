@@ -1,6 +1,7 @@
 # Estado del proyecto — tablero honesto
 
-Última actualización: 2026-10-16 (formalización del workspace).
+Última actualización: 2026-10-17 (crates movidos a `crates/`; prototipo
+archivado en `docs/historico/main-original-v0.1.0.rs`; 41 tests en verde).
 **Responsables de mantenerlo al día: los autores.** Actualícenlo en cada avance;
 este archivo vale si refleja la realidad, no el deseo.
 
@@ -9,7 +10,7 @@ este archivo vale si refleja la realidad, no el deseo.
 | Área | Estado | Nota |
 |---|---|---|
 | Prototipo 2D (física + visual) | ✅ Funcional | v0.1.0, código congelado en esta entrega |
-| Código (estructura) | ✅ Por crates | Workspace: `dualidad-core` + `dualidad-engine3d` + `dualidad-app`; 31 tests en verde |
+| Código (estructura) | ✅ Por crates | Workspace en `crates/`: `dualidad-core` + `dualidad-engine3d` + `dualidad-app`; 41 tests en verde |
 | Documentación | ✅ Formalizada | Visión, física, arquitectura, roadmap, entrega, riesgos |
 | Roadmap | ✅ Definido | `docs/05-roadmap.md` — la fase 3D falta **definirla**, no ejecutarla |
 | Motor 3D + UI | 🟢 v0.3 | Escena rica, panel CONTROL por ratón, presets fotón/electrón, 1–8 rendijas, capas, vistas y presentación; CI activa y GIF en el README |
@@ -27,18 +28,19 @@ este archivo vale si refleja la realidad, no el deseo.
 
 ## Verificación de “código intacto” (SHA-256)
 
-Comparando `proyecto-original/` (clon) contra esta carpeta, el 2026-10-16:
+Comparando `proyecto-original/` (clon) contra esta carpeta, el 2026-10-16
+(el prototipo se archivó después en `docs/historico/` sin tocar su contenido):
 
 ```
-src/main.rs   6a2c9267bc11f76bac6a0d70e02c339c3556c8978ff2b56afc18827e70f32a50  (idéntico)
-Cargo.toml    f3409c555090755766bb532a2e03cdeac17d4081798e29e8fcaac88407f95fde  (contenido idéntico; solo cambió el nombre del archivo)
+docs/historico/main-original-v0.1.0.rs   6a2c9267bc11f76bac6a0d70e02c339c3556c8978ff2b56afc18827e70f32a50  (idéntico)
+Cargo.toml                               f3409c555090755766bb532a2e03cdeac17d4081798e29e8fcaac88407f95fde  (contenido idéntico; solo cambió el nombre del archivo)
 ```
 
 Para re-verificar en cualquier momento:
 
 ```bash
-sha256sum src/main.rs
-# En PowerShell (Windows): Get-FileHash src\main.rs -Algorithm SHA256
+sha256sum docs/historico/main-original-v0.1.0.rs
+# En PowerShell (Windows): Get-FileHash docs\historico\main-original-v0.1.0.rs -Algorithm SHA256
 ```
 
 ## Los 5 siguientes pasos (en orden)

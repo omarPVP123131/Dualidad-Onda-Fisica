@@ -4,6 +4,21 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 Las versiones siguen [Versionado Semántico](https://semver.org/lang/es/) cuando
 el proyecto empiece a publicarlas.
 
+## [Sin publicar] — Reorganización de estructura (crates/)
+
+Sin cambios de código: solo ubicaciones de archivos y documentación.
+
+### Cambiado
+
+- Los tres crates del workspace se movieron de `src/dualidad-*` a
+  `crates/dualidad-*`, la convención de la comunidad Rust para workspaces.
+  Renames 100 % idénticos por git; `cargo test --workspace` sigue en verde.
+- El prototipo congelado `src/main.rs` se archivó en
+  `docs/historico/main-original-v0.1.0.rs` (contenido byte por byte intacto;
+  el SHA-256 de `ESTADO-DEL-PROYECTO.md` sigue siendo válido).
+- `docs/03-arquitectura-actual.md` y el árbol del README reflejan la nueva
+  ubicación; el conteo real de tests queda en 41.
+
 ## [0.7.0] — 2026-10-17 — WASD, scrollbar y bugs corregidos
 
 Corrección de los fallos reportados en uso real y las dos mejoras pedidas.
