@@ -1,14 +1,25 @@
-# Ignorar el directorio de compilación
-target/
+# --- Rust / Cargo ---
+/target/
+**/*.rs.bk
 
-# Ignorar todo el contenido si la carpeta se crea dinámicamente
-target/*
-
-# Archivos de log y temporales comunes
+# --- Logs y temporales ---
 *.log
 *.tmp
-*.class
 
-# Archivos de configuración del sistema operativo
+# --- IDEs y editores ---
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# --- Sistema operativo ---
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# --- Salidas locales del proyecto ---
+# Capturas y exportaciones generadas al vuelo (las oficiales van en docs/assets/)
+/capturas-locales/
+/exportaciones/

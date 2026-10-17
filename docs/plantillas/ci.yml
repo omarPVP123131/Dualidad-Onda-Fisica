@@ -1,0 +1,24 @@
+# CI PROPUESTA — aún NO está activa.
+# Para activarla: resolver primero el nombre Cargo.toml (doc. 04, punto 4),
+# copiar este contenido a .github/workflows/ci.yml y comprobar que pasa en verde.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Dependencias del sistema (macroquad en Linux)
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxi-dev libgl1-mesa-dev libasound2-dev
+      - run: Cargo fmt --check
+      - run: Cargo clippy --all-targets -- -D warnings
+      - run: Cargo test
+      - run: Cargo build --release
