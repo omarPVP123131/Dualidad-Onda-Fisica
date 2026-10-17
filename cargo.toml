@@ -1,0 +1,15 @@
+[package]
+name = "dualidad"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+macroquad = "0.4"
+
+# Dependencias optimizadas, tu código en debug: compila rápido y corre fluido
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+opt-level = 3
+lto = "thin"

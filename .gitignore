@@ -1,0 +1,14 @@
+# Ignorar el directorio de compilación
+target/
+
+# Ignorar todo el contenido si la carpeta se crea dinámicamente
+target/*
+
+# Archivos de log y temporales comunes
+*.log
+*.tmp
+*.class
+
+# Archivos de configuración del sistema operativo
+.DS_Store
+Thumbs.db
