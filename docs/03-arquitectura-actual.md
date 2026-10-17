@@ -1,74 +1,94 @@
-# 03 · Arquitectura actual (mapa del prototipo)
+# 03 · Arquitectura actual (por crates)
 
-> Radiografía honesta de la v0.1.0 para que los autores sepan dónde está todo
-> **antes** de reestructurar o construir el 3D. No describe un diseño ideal:
-> describe el que existe hoy.
+> Estado desde v0.2.0. El monolito original de 173 líneas se eliminó y se
+> reescribió en un **workspace Cargo por crates bajo `src/`**. La física y
+> los controles del prototipo se conservaron; la organización, no.
 
-## Vista general
-
-Todo el programa es **un solo archivo**: `src/main.rs` (173 líneas), con la
-dependencia `macroquad = "0.4"` (gráficos 2D, ventana, teclado y azar).
-No hay módulos, no hay tests, no hay archivos de configuración adicionales.
+## Mapa del workspace
 
 ```
-src/main.rs
-├── Constantes ..................... BINS, HALF_W, MAX_DOTS
-├── struct Sim ..................... estado + física + muestreo
-│   ├── Sim::new() ................. valores iniciales
-│   ├── Sim::reset() ............... limpia histograma y puntos
-│   ├── Sim::intensity(x) .......... I(x) de Fraunhofer (+ modo detector)
-│   └── Sim::shoot() ............... un impacto por muestreo por rechazo
-├── wavelength_color(λ) ............ λ 380–750 nm → color RGB aproximado
-├── window_conf() .................. ventana 1000×700
-└── main() ......................... bucle: teclado → disparos → dibujo → frame
+Cargo.toml                      # workspace virtual (sin paquete raíz)
+src/
+├── dualidad-core/              # CRATE 1 · física pura, cero gráficos
+│   └── src/
+│       ├── params.rs           # SimulationParams y rangos (SI)
+│       ├── physics.rs          # I(x) = sinc²(β)·cos²(δ), curva teórica
+│       ├── simulation.rs       # Simulation, Impact, muestreo por rechazo
+│       ├── histogram.rs        # bins, totales, conteos esperados
+│       ├── rng.rs              # SplitMix64 propio (reproducible, testeable)
+│       └── color.rs            # λ visible → RGB puro
+├── dualidad-engine3d/          # CRATE 2 · motor 3D sobre dualidad-core
+│   └── src/
+│       ├── camera.rs           # OrbitCamera (arrastre + rueda, con límites)
+│       ├── scene.rs            # laboratorio: fuente, rendijas, pantalla
+│       ├── wave_surface.rs     # superficie I(x) en malla por tiras
+│       ├── impacts.rs          # impactos en mallas por lotes (máx. 40 000)
+│       ├── particles.rs        # partículas en vuelo (visual esquemático)
+│       ├── hud.rs              # paneles 2D: estado, lectura, ayuda e histograma vs teoría
+│       ├── controls.rs         # dock de control: sliders, presets, vistas y capas
+│       ├── ui.rs               # sistema de diseño: Inter incrustada, paneles, switches
+│       ├── beams.rs            # haces translúcidos fuente/rendijas/pantalla
+│       ├── annotations.rs      # etiquetas proyectadas de cada elemento de la escena
+│       └── renderer.rs         # orquesta cámara → escena → datos → HUD
+└── dualidad-app/               # CRATE 3 · binario `dualidad`
+    └── src/
+        ├── main.rs             # ventana, bucle, semilla, composición
+        ├── state.rs            # AppState (simulación, ritmo, pausa)
+        └── input.rs            # teclado → acciones (controles del prototipo + C)
 ```
 
-## Flujo de cada frame
+## Regla de dependencias (no romper)
+
+```
+dualidad-app ──▶ dualidad-engine3d ──▶ dualidad-core
+      └──────────────▶ dualidad-core
+```
+
+- `dualidad-core` **no** depende de macroquad: se testea sin ventana.
+- `dualidad-engine3d` depende de core y macroquad, nunca de la app.
+- `dualidad-app` es la única que conoce la ventana: pega estado, entrada y render.
+- Si un cambio «necesita» que core conozca un color de macroquad o un Vec3:
+  está mal ubicado. Muévelo de crate.
+
+## Flujo por frame
 
 ```mermaid
 flowchart LR
-    A[Leer teclado] --> B{¿Cambió λ, d, a u O?}
-    B -- Sí --> C[reset: limpiar impactos]
-    B -- No --> D
-    C --> D{¿Pausa?}
-    D -- No --> E[Disparar N partículas]
-    E --> F[Dibujar pantalla de impactos]
-    D -- Sí --> F
-    F --> G[Dibujar histograma vs teoría]
-    G --> H[next_frame]
-    H --> A
+    A[input: teclado] --> B[AppState / Simulation]
+    B --> C[shoot_many en dualidad-core]
+    C --> D[Renderer: cámara 3D]
+    D --> E[escena + superficie + impactos + histograma]
+    E --> F[HUD 2D]
+    F --> A
 ```
 
-## Constantes que mandan
+## Decisiones de rendimiento ya tomadas
 
-| Constante | Valor | Efecto |
-|---|---|---|
-| `BINS` | 500 | Resolución del histograma |
-| `HALF_W` | 0.02 m | Semiancho de pantalla (±20 mm) |
-| `MAX_DOTS` | 40 000 | Máximo de puntos guardados para dibujar (el histograma sigue contando) |
+- macroquad recorta cada geometría a 5 000 índices: la superficie se
+  divide en tiras y los impactos en mallas de 800 quads (verificado en ejecución).
+- La superficie de `I(x)` solo se reconstruye si cambió λ, `d`, `a` o el detector.
+- El histograma se agrega de 500 a 96 barras visuales, conservando el total.
+- RNG propio con semilla: reproducible en tests, distinta en cada sesión
+  (la app siembra desde el reloj).
 
-## Límites y notas de lectura (ver detalle en el doc. 08)
+## Tests (31, todos en verde)
 
-- Al cambiar λ, `d`, `a` o el detector, los impactos se reinician: no se
-  mezclan distribuciones distintas. Correcto didácticamente.
-- La curva teórica se recalcula **cada frame** sobre los 500 bins (incluye una
-  suma completa de normalización). Funciona, pero es trabajo repetido que un
-  futuro refactor debería evitar — documentado, no corregido.
-- `L` está fija en 1.0 m y no tiene control; `rate` y `paused` viven fuera
-  de `Sim`, en el `main`.
-- La física y el dibujo conviven en el mismo archivo/módulo: para crecer
-  (3D, tests) habrá que separarlas. El orden sugerido está en el roadmap.
+| Crate | Qué cubre |
+|---|---|
+| dualidad-core (21) | I(x) con 1–N rendijas, de Broglie del electrón, presets, histograma, rangos, muestreo y emergencia del patrón |
+| dualidad-engine3d (11) | cámara, barrera, haces, malla de onda y autoajuste de calidad por fps |
+| dualidad-app (1) | saturación del ritmo de disparo |
 
-## Dependencias
+```bash
+cargo test --workspace
+cargo clippy --workspace --all-targets -- -D warnings
+cargo build --release   # ejecutable: target/release/dualidad
+```
 
-| Crate | Uso | Estado |
-|---|---|---|
-| `macroquad 0.4` | Ventana, dibujo 2D, entrada, azar | Único crate directo; el resto de `Cargo.lock` es transitivo |
+## Dónde tocar según la tarea
 
-## Cómo orientarse para su primer cambio
-
-1. Léete `Sim::intensity` + el doc. 02: ahí vive toda la física.
-2. Léete el bloque «Controles» del `main`: ahí vive toda la interacción.
-3. Léete el bloque «Dibujo»: es lo que el 3D algún día reemplazará o complementará.
-   Ojo: reemplazar el dibujo sin tocar `Sim` debería ser posible si primero
-   se separan física y presentación (Fase 1 del roadmap).
+| Quiero cambiar… | Crate / archivo |
+|---|---|
+| Una fórmula o un nuevo modo físico | `dualidad-core` (+ tests + doc. 02) |
+| Cómo se ve la escena, cámara o mallas | `dualidad-engine3d` |
+| Teclas, ritmo, tamaño de ventana | `dualidad-app` |

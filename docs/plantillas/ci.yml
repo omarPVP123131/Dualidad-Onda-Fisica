@@ -1,6 +1,5 @@
-# CI PROPUESTA — aún NO está activa.
-# Para activarla: resolver primero el nombre Cargo.toml (doc. 04, punto 4),
-# copiar este contenido a .github/workflows/ci.yml y comprobar que pasa en verde.
+# COPIA DE REFERENCIA. La CI ACTIVA vive en .github/workflows/ci.yml
+# (activada en v0.3). Este archivo queda solo como respaldo legible.
 name: ci
 
 on:

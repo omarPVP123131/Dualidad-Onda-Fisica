@@ -10,7 +10,7 @@
 | 0 | Formalización del workspace (esta entrega) | ✅ Hecha (2026-10-16) |
 | 1 | Base técnica sana — sin cambiar el comportamiento visible | 📋 Definida |
 | 2 | Experiencia 2D lista para entregar en clase | 📋 Definida |
-| 3 | **Diseño y desarrollo 3D (los autores)** | 🔴 Sin definir |
+| 3 | **Diseño y desarrollo 3D** | 🟢 Primera versión implementada (motor y escena base) |
 | 4 | Pulido y entrega escolar | 📋 Definida (fecha por confirmar) |
 | 5 | Futuro opcional (post-entrega) | 💡 Ideas, sin compromiso |
 
@@ -30,14 +30,12 @@ máquina. Nada de esto cambia lo que el usuario ve.*
 
 - [x] Renombrar `cargo.toml` → `Cargo.toml` (2026-10-16; contenido intacto — doc. 04, punto 4).
 - [ ] Compilar desde cero en Windows **y** en Linux; completar el doc. 04 con lo aprendido.
-- [ ] Separar en módulos sin cambiar la física: física/estado, entrada, dibujo.
-  (La frontera natural ya existe: `Sim` vs. bloque de dibujo del `main`.)
-- [ ] Primeros tests de la física: `I(0)` es el máximo, simetría `I(x)=I(−x)`,
-  con detector desaparece el `cos²`, intensidades siempre en [0, 1].
+- [x] Separar por crates sin cambiar la física: core / engine3d / app (v0.2.0, doc. 03).
+- [x] Tests de la física: máximo, simetría, modo detector, rango [0, 1] (25 tests en total).
 - [ ] Activar la CI propuesta en `docs/plantillas/ci.yml` (fmt + clippy + test + build).
 - [x] Licencia decidida: `GPL-3.0-or-later` (ADR-0003); una sola licencia declarada en README y `LICENSE`.
 
-**Criterio de salida:** clon nuevo + `Cargo run --release` funciona en ambas
+**Criterio de salida:** clon nuevo + `cargo run --release` funciona en ambas
 máquinas, con tests en verde, sin que la simulación se vea distinta.
 
 ## Fase 2 · Experiencia 2D para clase 📋
@@ -53,15 +51,16 @@ máquinas, con tests en verde, sin que la simulación se vea distinta.
 **Criterio de salida:** un compañero que nunca vio el proyecto puede correrlo
 y explicar el fenómeno solo con el README y el informe.
 
-## Fase 3 · 3D 🔴 SIN DEFINIR — la definen Omar y Leonardo
+## Fase 3 · 3D 🟢 PRIMERA VERSIÓN IMPLEMENTADA — pulir con los autores
 
-> ⚠️ No hay diseño 3D aprobado ni fecha posible hasta responder
-> `docs/06-diseno-3d.md` y `docs/09-preguntas-abiertas.md` (sección 3D).
-> Esta fase se rellena **después** de esa definición, nunca al revés.
-
-- [ ] Completar la plantilla de diseño `docs/06-diseno-3d.md`.
-- [ ] ADR-0004: qué se representa en 3D y con qué tecnología.
-- [ ] Recién entonces: descomponer esta fase en tareas con responsables y fechas.
+- [x] Definición v1: superficie `I(x)` en laboratorio 3D orbitable (ADR-0004).
+- [x] Arquitectura por crates: `dualidad-core` / `dualidad-engine3d` / `dualidad-app`.
+- [x] Escena: fuente, doble rendija, sensores, pantalla, impactos, histograma 3D y HUD.
+- [x] Verificación: tests, clippy limpio, arranque headless sin errores y captura visual revisada.
+- [x] v0.3: UI por ratón (sliders/vistas/capas/presentación), presets fotón/electrón, 1–8 rendijas, CI activa y GIF.
+- [ ] Jugarla en las máquinas de los autores y ajustar cámara/escala/ritmo con su feedback.
+- [ ] Capturas oficiales del 3D en `docs/assets/` para el informe.
+- [ ] Ideas siguientes (si sobra tiempo): presets, control de `L`, exportación.
 
 ## Fase 4 · Entrega escolar 📋 (fecha: **por confirmar**)
 

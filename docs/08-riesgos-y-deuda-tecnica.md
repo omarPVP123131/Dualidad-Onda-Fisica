@@ -9,8 +9,8 @@
 | # | Deuda | Impacto | Costo de arreglarla | Fase |
 |---|---|---|---|---|
 | D1 | ~~`cargo.toml` en minúsculas~~ ✅ | Resuelto el 2026-10-16: renombrado a `Cargo.toml` sin tocar su contenido | — | 1 |
-| D2 | Todo en un solo `main.rs` | Física, entrada y dibujo acoplados; el 3D obligaría a reescribir sin red | Medio: separar módulos sin cambiar la física | 1 |
-| D3 | **Sin tests** | Nadie garantiza que un cambio conserve la física correcta | Bajo: tests de `intensity` (simetría, máximo, modo detector) | 1 |
+| D2 | ~~Todo en un solo `main.rs`~~ ✅ | Resuelto en v0.2.0: workspace por crates core/engine3d/app (doc. 03) | — | 1 |
+| D3 | ~~**Sin tests**~~ ✅ | Resuelto: 25 tests de física, muestreo, mallas y cámara en verde | — | 1 |
 | D4 | La teoría se recalcula cada frame (500 bins + normalización) | Trabajo repetido por siempre; irrelevante hoy, molesto en 3D/mallas | Bajo: recalcular solo al cambiar parámetros | 1 |
 | D5 | `L` fija y sin control | Un parámetro físico clave no se puede explorar en clase | Bajo (cuando toquen código) | 2 |
 | D6 | ~~Licencia ambigua («MIT y GPL»)~~ ✅ | Resuelto el 2026-10-16: una sola licencia, `GPL-3.0-or-later` en `LICENSE` (ADR-0003) | — | 1 |

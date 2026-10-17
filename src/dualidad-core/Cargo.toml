@@ -1,0 +1,10 @@
+[package]
+name = "dualidad-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Núcleo físico y de simulación de la doble rendija (sin dependencias gráficas)"
+
+[lints]
+workspace = true

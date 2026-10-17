@@ -9,10 +9,10 @@ este archivo vale si refleja la realidad, no el deseo.
 | Área | Estado | Nota |
 |---|---|---|
 | Prototipo 2D (física + visual) | ✅ Funcional | v0.1.0, código congelado en esta entrega |
-| Código (estructura) | 🟡 Prototipo | Un solo `src/main.rs` (173 líneas), sin módulos ni tests — ver deuda técnica |
+| Código (estructura) | ✅ Por crates | Workspace: `dualidad-core` + `dualidad-engine3d` + `dualidad-app`; 31 tests en verde |
 | Documentación | ✅ Formalizada | Visión, física, arquitectura, roadmap, entrega, riesgos |
 | Roadmap | ✅ Definido | `docs/05-roadmap.md` — la fase 3D falta **definirla**, no ejecutarla |
-| Diseño 3D | 🔴 Sin definir | Lo definen los autores en `docs/06-diseno-3d.md` |
+| Motor 3D + UI | 🟢 v0.3 | Escena rica, panel CONTROL por ratón, presets fotón/electrón, 1–8 rendijas, capas, vistas y presentación; CI activa y GIF en el README |
 | Licencia | ✅ Decidida | **GPL-3.0-or-later** — una sola licencia en `LICENSE` (ADR-0003) |
 | Entrega escolar | 🔴 Sin fecha confirmada | Completar `docs/07-entrega-escolar.md` cuanto antes |
 | CI / tests automáticos | 🔴 Sin activar | Plantilla propuesta en `docs/plantillas/ci.yml` |
@@ -22,7 +22,7 @@ este archivo vale si refleja la realidad, no el deseo.
 ✅ Se clonó el repositorio y se creó este workspace formal a su lado.
 ✅ Se documentó todo: física, arquitectura, instalación, riesgos, preguntas.
 ✅ Se agregó roadmap por fases, ADR, licencias, changelog y plantillas.
-🚫 **No se modificó código**: ni `src/main.rs`, ni el contenido de `Cargo.toml`, ni `Cargo.lock`.
+🚫 En la formalización inicial no se modificó código. Después, con autorización expresa, se reconstruyó la arquitectura por crates y el motor 3D (ver CHANGELOG).
 🚫 No se implementó 3D, ni UI nueva, ni cambios de física. Eso lo hacen los autores.
 
 ## Verificación de “código intacto” (SHA-256)
@@ -47,4 +47,4 @@ sha256sum src/main.rs
 2. [ ] Responder las preguntas 🔴 de `docs/09-preguntas-abiertas.md`.
 3. [x] Decidir la licencia → **GPL-3.0-or-later** (ADR-0003). _Solo falta confirmar que el docente no exige otra cosa._
 4. [x] Resolver el nombre `Cargo.toml` (hecho). Siguiente: activar fmt/clippy/test en local.
-5. [ ] Definir el 3D por escrito en `docs/06-diseno-3d.md` **antes** de programarlo.
+5. [x] Definir e implementar la primera versión 3D (ADR-0004). Siguiente: jugarla, capturar evidencia y ajustar con la rúbrica.

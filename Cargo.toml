@@ -1,12 +1,22 @@
-[package]
-name = "dualidad"
-version = "0.1.0"
+[workspace]
+resolver = "2"
+members = [
+    "src/dualidad-core",
+    "src/dualidad-engine3d",
+    "src/dualidad-app",
+]
+default-members = ["src/dualidad-app"]
+
+[workspace.package]
+version = "0.7.0"
 edition = "2021"
+license = "GPL-3.0-or-later"
+authors = ["Omar Palomares Velasco", "Leonardo Miguel Vega Carbajal"]
+repository = "https://github.com/omarPVP123131/Dualidad-Onda-Fisica"
 
-[dependencies]
-macroquad = "0.4"
+[workspace.lints.clippy]
+all = "warn"
 
-# Dependencias optimizadas, tu código en debug: compila rápido y corre fluido
 [profile.dev.package."*"]
 opt-level = 3
 

@@ -10,7 +10,8 @@
 1. **Entrega:** ¿materia, docente, fecha exacta y rúbrica? → doc. 07
    - Respuesta: ___ Fecha: ___
 2. **Alcance 3D:** ¿qué verá el usuario en 3D que hoy no ve? → doc. 06, pregunta de oro
-   - Respuesta: ___ Fecha: ___
+   - ✅ Respuesta (v1): la distribución `I(x)` como superficie en un laboratorio
+     orbitable, con impactos e histograma en 3D. Fecha: 2026-10-16 (ADR-0004).
 3. **Licencia:** ¿MIT, GPL-3.0 o dual? → `LICENCIAS.md` / ADR-0003
    - ✅ Respuesta: **GPL-3.0-or-later** (copyleft). Fecha: 2026-10-16.
      Solo queda confirmar que el docente no exige otra licencia (doc. 07).

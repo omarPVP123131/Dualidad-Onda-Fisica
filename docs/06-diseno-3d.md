@@ -1,8 +1,11 @@
 # 06 · Diseño 3D — plantilla para que la definan los autores
 
-> **Estado: 🔴 SIN DEFINIR.** Este documento no diseña el 3D: es el formato
-> para que Omar y Leonardo Miguel Vega Carbajal lo definan por escrito **antes** de programar
-> una sola línea. Nadie debe implementar nada de aquí hasta aprobarlo (ADR-0004).
+> **Estado: 🟢 DEFINICIÓN V1 IMPLEMENTADA (2026-10-16, ADR-0004).** Se eligió
+> superficie de `I(x)` en un laboratorio orbitable con macroquad 3D sobre la
+> arquitectura por crates. Lo escrito abajo queda como el registro de esa
+> definición y la plantilla para su **siguiente iteración**: si Omar y Leonardo quieren
+> cambiar qué representa el 3D, actualizan este documento y el ADR-0004
+> antes de tocar `dualidad-engine3d`.
 
 ## 1. La pregunta de oro (responder en una frase)
 

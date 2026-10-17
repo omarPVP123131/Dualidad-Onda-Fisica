@@ -1,0 +1,19 @@
+[package]
+name = "dualidad-app"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Aplicación de escritorio del simulador de dualidad onda-partícula"
+
+[[bin]]
+name = "dualidad"
+path = "src/main.rs"
+
+[dependencies]
+dualidad-core = { path = "../dualidad-core" }
+dualidad-engine3d = { path = "../dualidad-engine3d" }
+macroquad = "0.4"
+
+[lints]
+workspace = true
