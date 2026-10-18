@@ -40,11 +40,25 @@ async fn main() {
 
         if !state.paused {
             let before = state.sim.impacts().len();
-            state.sim.shoot_many(&mut state.rng, state.rate);
+            let hechas = state.sim.shoot_many(&mut state.rng, state.rate);
             let after = state.sim.impacts().len();
-            if after > before {
-                let nuevos = state.sim.impacts()[before..after].to_vec();
-                renderer.notify_impacts(&state.sim, &nuevos);
+            if hechas > 0 {
+                let impactos = state.sim.impacts();
+                let nuevos = if after > before {
+                    &impactos[before..after]
+                } else if !impactos.is_empty() {
+                    // Almacén de impactos lleno: reusar los últimos
+                    // impactos almacenados para seguir alimentando
+                    // las partículas visuales sin tocar la física.
+                    let start = impactos
+                        .len()
+                        .saturating_sub(hechas as usize)
+                        .min(impactos.len());
+                    &impactos[start..]
+                } else {
+                    &[]
+                };
+                renderer.notify_impacts(&state.sim, nuevos);
             }
         }
 
@@ -63,11 +77,25 @@ async fn main() {
         let outcome = renderer.render(&mut state.sim, &hud, dt, &mut state.rate, &mut state.paused);
         if outcome.shoot > 0 {
             let before = state.sim.impacts().len();
-            state.sim.shoot_many(&mut state.rng, outcome.shoot);
+            let hechas = state.sim.shoot_many(&mut state.rng, outcome.shoot);
             let after = state.sim.impacts().len();
-            if after > before {
-                let nuevos = state.sim.impacts()[before..after].to_vec();
-                renderer.notify_impacts(&state.sim, &nuevos);
+            if hechas > 0 {
+                let impactos = state.sim.impacts();
+                let nuevos = if after > before {
+                    &impactos[before..after]
+                } else if !impactos.is_empty() {
+                    // Almacén de impactos lleno: reusar los últimos
+                    // impactos almacenados para seguir alimentando
+                    // las partículas visuales sin tocar la física.
+                    let start = impactos
+                        .len()
+                        .saturating_sub(hechas as usize)
+                        .min(impactos.len());
+                    &impactos[start..]
+                } else {
+                    &[]
+                };
+                renderer.notify_impacts(&state.sim, nuevos);
             }
         }
 
