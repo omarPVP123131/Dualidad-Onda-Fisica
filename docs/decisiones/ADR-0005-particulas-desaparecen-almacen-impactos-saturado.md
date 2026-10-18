@@ -1,6 +1,6 @@
 # ADR-0005 · Partículas en vuelo desaparecen tras saturar el almacén de impactos
 
-- **Estado:** Abierto
+- **Estado:** Aceptado
 - **Fecha:** 2026-10-17
 - **Deciden:** Omar / Leonardo
 

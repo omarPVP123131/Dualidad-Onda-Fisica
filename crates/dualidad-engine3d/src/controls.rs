@@ -369,8 +369,6 @@ impl ControlPanel {
             view,
         ) {
             sim.params.set_wavelength_nm(380.0 + f as f64 * 370.0);
-            sim.reset();
-            out.reset_visuals = true;
         }
         cy += 38.0;
         if let Some(f) = self.slider(
@@ -385,8 +383,6 @@ impl ControlPanel {
             view,
         ) {
             sim.params.set_separation_um(log_val(f, 0.5, 200.0));
-            sim.reset();
-            out.reset_visuals = true;
         }
         cy += 38.0;
         if let Some(f) = self.slider(
@@ -401,8 +397,6 @@ impl ControlPanel {
             view,
         ) {
             sim.params.set_width_um(log_val(f, 0.1, 40.0));
-            sim.reset();
-            out.reset_visuals = true;
         }
         cy += 38.0;
         if let Some(f) = self.slider(
@@ -417,8 +411,6 @@ impl ControlPanel {
             view,
         ) {
             sim.params.set_distance_m(0.2 + f as f64 * 2.3);
-            sim.reset();
-            out.reset_visuals = true;
         }
         cy += 38.0;
         if let Some(f) = self.slider(

@@ -14,7 +14,7 @@ use macroquad::prelude::*;
 const QUADS_PER_MESH: usize = 800;
 const QUAD: f32 = 0.030;
 /// Reconstruir como mucho cada N impactos nuevos (equilibrio fluidez/detalle).
-const REBUILD_EVERY: usize = 250;
+const REBUILD_EVERY: usize = 25;
 
 #[derive(Default)]
 pub struct ImpactsCache {
