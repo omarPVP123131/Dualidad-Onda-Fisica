@@ -9,6 +9,8 @@ posterior** — identificador SPDX: **`GPL-3.0-or-later`**.
 - **Titulares:** Copyright © 2026 Omar Palomares Velasco y Leonardo Miguel Vega Carbajal.
 - **Decisión registrada en:** `docs/decisiones/ADR-0003-licencias.md`
   (2026-10-16, criterio: copyleft).
+- **Sin datos de escuela:** materia, institución y docente quedan como
+  plantilla en `docs/07-entrega-escolar.md` hasta que los autores los completen.
 
 ## Qué significa, en español claro
 
@@ -29,15 +31,16 @@ de los autores es que el proyecto **siga siendo abierto**, se eligió GPL-3.0-or
 El texto alternativo de MIT que existía en la formalización inicial se retiró
 para que no haya ninguna ambigüedad: **una sola licencia manda, `LICENSE`.**
 
-## Sin salvedades
+## Única salvedad
 
-El proyecto es personal: no hay requisitos externos de licenciamiento.
-La GPL-3.0-or-later es la única licencia y manda sobre todo el repositorio.
+Al momento de decidir se desconocía si la escuela/docente exige alguna
+condición propia de licenciamiento. Si la exige, esa indicación prevalece:
+consultarlo con el docente antes de la entrega y, si aplica, actualizar
+ADR-0003 y este archivo en el mismo cambio.
 
 ## Nota sobre el código fuente
 
-No se añadió la cabecera GPL dentro del prototipo congelado (hoy en
-`docs/historico/main-original-v0.1.0.rs`) porque el código quedó
+No se añadió la cabecera GPL dentro de `src/main.rs` porque el código quedó
 congelado por diseño (solo se autorizó renombrar `Cargo.toml`). La licencia
 aplica por el archivo `LICENSE` raíz. Si en el futuro retocan el código,
 pueden añadir la cabecera estándar de la FSF en cada archivo, opcional.

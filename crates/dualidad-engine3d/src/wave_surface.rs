@@ -7,7 +7,13 @@
 //!
 //! La superficie se emite en tiras: macroquad recorta cada geometría a
 //! 5 000 índices, y una sola malla los superaría con creces.
+//!
+//! Los contornos, los frentes animados y el perfil brillante ya no usan
+//! `draw_line_3d` (una subida de geometría por línea): se acumulan como
+//! cintas en un `LineBatch` compartido y se dibujan en unas pocas
+//! llamadas.
 
+use crate::batch::LineBatch;
 use crate::color::to_color;
 use crate::layout;
 use dualidad_core::{physics, Simulation, SimulationParams};
@@ -89,7 +95,10 @@ fn build_strip(sim: &Simulation, color: Color, j0: usize, j1: usize, nx: usize, 
 
 /// Contornos tenues sobre la superficie: filas (z fijo) y columnas
 /// (x fijo) que hacen legible la forma sin anadir geometria pesada.
-pub fn draw_wave_contours(sim: &Simulation) {
+/// Van al lote de cintas: antes eran ~980 llamadas de dibujo por frame.
+pub fn draw_wave_contours(sim: &Simulation, lines: &mut LineBatch) {
+    /// Mitad del ancho de la cinta (≈1 px en la vista por defecto).
+    const HALF: f32 = 0.006;
     let line = Color::new(1.0, 1.0, 1.0, 0.16);
     let at = |u: f64, t: f32| {
         vec3(
@@ -103,7 +112,7 @@ pub fn draw_wave_contours(sim: &Simulation) {
         let mut prev = at(0.0, t);
         for i in (2..=NX).step_by(2) {
             let cur = at(i as f64 / NX as f64, t);
-            draw_line_3d(prev, cur, line);
+            lines.segment(prev, cur, HALF, line);
             prev = cur;
         }
     }
@@ -112,7 +121,7 @@ pub fn draw_wave_contours(sim: &Simulation) {
         let mut prev = at(u, 0.0);
         for j in (2..=NZ).step_by(2) {
             let cur = at(u, j as f32 / NZ as f32);
-            draw_line_3d(prev, cur, line);
+            lines.segment(prev, cur, HALF, line);
             prev = cur;
         }
     }
@@ -120,7 +129,9 @@ pub fn draw_wave_contours(sim: &Simulation) {
 
 /// Frentes de onda animados: perfiles brillantes que viajan de las
 /// rendijas a la pantalla sobre la superficie, en bucle.
-pub fn draw_wavefronts(sim: &Simulation, time: f32) {
+pub fn draw_wavefronts(sim: &Simulation, time: f32, lines: &mut LineBatch) {
+    /// Mitad del ancho de la cinta (≈1 px en la vista por defecto).
+    const HALF: f32 = 0.008;
     let bright = crate::color::wave_color(sim.params.wavelength_m, 0.85);
     for k in 0..3 {
         let t = (time * 0.28 + k as f32 / 3.0).fract();
@@ -136,7 +147,7 @@ pub fn draw_wavefronts(sim: &Simulation, time: f32) {
                 z,
             );
             if let Some(p0) = prev {
-                draw_line_3d(p0, cur, c);
+                lines.segment(p0, cur, HALF, c);
             }
             prev = Some(cur);
         }
@@ -152,7 +163,12 @@ pub fn draw_wavefronts(sim: &Simulation, time: f32) {
             let a = s as f32 / 28.0 * std::f32::consts::TAU;
             let cur = vec3(axis.x + a.cos() * r, axis.y + a.sin() * r, z);
             if let Some(p0) = prev {
-                draw_line_3d(p0, cur, Color::new(bright.r, bright.g, bright.b, 0.35));
+                lines.segment(
+                    p0,
+                    cur,
+                    HALF,
+                    Color::new(bright.r, bright.g, bright.b, 0.35),
+                );
             }
             prev = Some(cur);
         }
@@ -160,9 +176,13 @@ pub fn draw_wavefronts(sim: &Simulation, time: f32) {
 }
 
 /// Perfil brillante donde la superficie toca la pantalla (el “resultado”).
-pub fn draw_profile_glow(sim: &Simulation) {
+pub fn draw_profile_glow(sim: &Simulation, lines: &mut LineBatch) {
     let bright = crate::color::wave_color(sim.params.wavelength_m, 1.0);
-    for (dy, alpha) in [(0.0, 0.95), (-0.028, 0.35), (0.028, 0.35)] {
+    for (dy, alpha, half) in [
+        (0.0, 0.95, 0.010),
+        (-0.028, 0.35, 0.007),
+        (0.028, 0.35, 0.007),
+    ] {
         let mut prev: Option<Vec3> = None;
         for i in (0..=NX).step_by(2) {
             let u = i as f64 / NX as f64;
@@ -172,7 +192,12 @@ pub fn draw_profile_glow(sim: &Simulation) {
                 layout::SCREEN_Z - 0.20,
             );
             if let Some(p0) = prev {
-                draw_line_3d(p0, cur, Color::new(bright.r, bright.g, bright.b, alpha));
+                lines.segment(
+                    p0,
+                    cur,
+                    half,
+                    Color::new(bright.r, bright.g, bright.b, alpha),
+                );
             }
             prev = Some(cur);
         }

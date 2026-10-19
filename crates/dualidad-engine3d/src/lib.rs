@@ -13,6 +13,7 @@
 //! No contiene física: todo el modelo vive en `dualidad-core`.
 
 pub mod annotations;
+pub mod batch;
 pub mod beams;
 pub mod camera;
 pub mod color;

@@ -1,6 +1,7 @@
 //! Orquestador del render: cámara 3D → escena → datos → HUD 2D.
 
 use crate::annotations;
+use crate::batch::{LineBatch, ViewBasis};
 use crate::beams::build_beams;
 use crate::camera::OrbitCamera;
 use crate::controls::{ControlOutcome, ControlPanel, Layers};
@@ -53,6 +54,11 @@ pub struct Renderer {
     wave_meshes: Option<Vec<Mesh>>,
     beam_meshes: Option<Vec<Mesh>>,
     wave_key: Option<WaveKey>,
+    /// Escena estática cacheada (se reconstruye solo si cambia su clave).
+    lab_meshes: Vec<Mesh>,
+    lab_key: Option<scene::LabKey>,
+    /// Cintas de contornos/frentes/perfil reutilizadas cada frame.
+    wave_lines: LineBatch,
     impacts: ImpactsCache,
     particles: FlightParticles,
 }
@@ -90,10 +96,15 @@ impl Renderer {
 
     /// Notifica impactos recién generados (para las partículas en vuelo).
     pub fn notify_impacts(&mut self, sim: &Simulation, new_impacts: &[Impact]) {
+        if !self.layers.particles {
+            // Capa oculta: no acumular vuelos que nadie va a ver.
+            return;
+        }
         self.particles.spawn(
             &sim.params,
             new_impacts,
             self.effective_quality().particles_cap(),
+            sim.observe,
         );
     }
 
@@ -147,7 +158,18 @@ impl Renderer {
         set_camera(&cam3d);
         clear_background(crate::color::BACKGROUND);
 
-        scene::draw_lab(sim.observe, &sim.params, tier.ambient_detail());
+        let view = ViewBasis::of(&cam3d);
+        // Escena estática: agrupada en mallas y cacheada hasta que cambie
+        // la física representada o el detalle ambiental.
+        let lab_key = scene::LabKey::of(&sim.params, tier.ambient_detail());
+        if self.lab_key.as_ref() != Some(&lab_key) {
+            self.lab_meshes = scene::build_lab_meshes(&sim.params, tier.ambient_detail());
+            self.lab_key = Some(lab_key);
+        }
+        for mesh in &self.lab_meshes {
+            draw_mesh(mesh);
+        }
+        scene::draw_lab_extras(&sim.params, sim.observe);
 
         // Superficie de I(x): se reconstruye solo si cambió el estado físico.
         let mut key = WaveKey::of(sim);
@@ -175,15 +197,21 @@ impl Renderer {
         self.impacts.draw(sim, tier.impact_draw_cap(), tier.halo());
         let time = get_time() as f32;
         if self.layers.wave {
+            // Contornos, frentes y perfil viajan juntos en un lote de
+            // cintas: antes eran ~1 550 subidas de geometría por frame.
+            self.wave_lines.begin(view.forward);
             if tier.contours() {
-                draw_wave_contours(sim);
+                draw_wave_contours(sim, &mut self.wave_lines);
             }
-            draw_wavefronts(sim, time);
-            draw_profile_glow(sim);
+            draw_wavefronts(sim, time, &mut self.wave_lines);
+            draw_profile_glow(sim, &mut self.wave_lines);
+            self.wave_lines.draw();
         }
+        // Los vuelos se actualizan siempre (aunque la capa esté oculta,
+        // nadie queda «congelado» a medias); solo el dibujo se salta.
+        self.particles.update(dt);
         if self.layers.particles {
-            self.particles
-                .update_and_draw(dt, sim.params.wavelength_m, tier);
+            self.particles.draw(sim.params.wavelength_m, tier, view);
         }
 
         set_default_camera();

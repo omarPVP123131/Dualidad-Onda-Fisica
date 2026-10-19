@@ -1,7 +1,7 @@
 # Cómo contribuir (Omar + Leonardo)
 
 Este proyecto lo desarrollan dos personas. Esta guía es corta a propósito:
-su trabajo es que nunca se pisen, nunca se pierda código y cualquiera
+su trabajo es que nunca se pisen, nunca se pierda código y cualquier profesor
 pueda seguir qué hizo cada quién.
 
 ## Flujo de trabajo
@@ -41,6 +41,6 @@ cargo run --release   # y probar los controles a mano
 | Física y validación | por definir | la otra persona |
 | Escena 3D y cámara | por definir | la otra persona |
 | UI, textos y accesibilidad | por definir | la otra persona |
-| Documentación y capturas | por definir | la otra persona |
+| Documentación e informe | por definir | la otra persona |
 
 *Llenen la tabla en su primera reunión y déjenla registrada aquí con fecha.*

@@ -1,9 +1,8 @@
 # 03 · Arquitectura actual (por crates)
 
-> Estado desde v0.2.0; desde v0.7.x los crates viven en `crates/`. El monolito
-> original de 173 líneas se archivó en `docs/historico/main-original-v0.1.0.rs`
-> y se reescribió en un **workspace Cargo por crates bajo `crates/`**. La
-> física y los controles del prototipo se conservaron; la organización, no.
+> Estado desde v0.2.0. El monolito original de 173 líneas se eliminó y se
+> reescribió en un **workspace Cargo por crates bajo `crates/`**. La física y
+> los controles del prototipo se conservaron; la organización, no.
 
 ## Mapa del workspace
 
@@ -23,6 +22,7 @@ crates/
 │       ├── camera.rs           # OrbitCamera (arrastre + rueda, con límites)
 │       ├── scene.rs            # laboratorio: fuente, rendijas, pantalla
 │       ├── wave_surface.rs     # superficie I(x) en malla por tiras
+│       ├── batch.rs            # lotes de geometría reutilizables (mallas y cintas)
 │       ├── impacts.rs          # impactos en mallas por lotes (máx. 40 000)
 │       ├── particles.rs        # partículas en vuelo (visual esquemático)
 │       ├── hud.rs              # paneles 2D: estado, lectura, ayuda e histograma vs teoría
@@ -67,17 +67,24 @@ flowchart LR
 
 - macroquad recorta cada geometría a 5 000 índices: la superficie se
   divide en tiras y los impactos en mallas de 800 quads (verificado en ejecución).
+- **La geometría 3D se agrupa en lotes reutilizables** (`batch.rs`, ADR-0008):
+  escena estática cacheada en mallas por clave, efectos de onda como cintas
+  en un solo lote y partículas en dos lotes. De ~2 500–3 000 subidas de
+  geometría por frame a unas decenas (decisivo con render por software).
+- **Impactos con anillo incremental** (ADR-0008): cada impacto escribe su
+  ranura en O(1), sin reconstruir la malla ni al deslizarse la ventana; la
+  pantalla se actualiza al instante.
 - La superficie de `I(x)` solo se reconstruye si cambió λ, `d`, `a` o el detector.
 - El histograma se agrega de 500 a 96 barras visuales, conservando el total.
 - RNG propio con semilla: reproducible en tests, distinta en cada sesión
   (la app siembra desde el reloj).
 
-## Tests (41, todos en verde)
+## Tests (55, todos en verde)
 
 | Crate | Qué cubre |
 |---|---|
-| dualidad-core (22) | I(x) con 1–N rendijas, de Broglie del electrón, presets, histograma, rangos, muestreo y emergencia del patrón |
-| dualidad-engine3d (18) | cámara, barrera, haces, malla de onda, autoajuste de calidad y vuelo de partículas |
+| dualidad-core (23) | I(x) con 1–N rendijas, de Broglie del electrón, presets, histograma, rangos, muestreo y emergencia del patrón |
+| dualidad-engine3d (31) | cámara, barrera, haces, malla de onda, autoajuste de calidad, lotes de geometría y anillo de impactos |
 | dualidad-app (1) | saturación del ritmo de disparo |
 
 ```bash

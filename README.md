@@ -18,7 +18,8 @@ Repositorio original: [omarPVP123131/Dualidad-Onda-Fisica](https://github.com/om
 - Omar Palomares Velasco
 - Leonardo Miguel Vega Carbajal
 
-Proyecto personal de los autores.
+Proyecto escolar/universitario. Materia, institución, grupo y docente: **por completar**
+en [`docs/07-entrega-escolar.md`](docs/07-entrega-escolar.md).
 
 ## Qué hace hoy (v0.3.0)
 
@@ -93,8 +94,9 @@ Empieza por el índice: [`docs/00-indice.md`](docs/00-indice.md)
 | `docs/02-fisica.md` | Modelo, ecuaciones, supuestos y límites |
 | `docs/03-arquitectura-actual.md` | Mapa honesto del código actual, línea por línea |
 | `docs/04-instalacion-y-desarrollo.md` | Instalar, correr y diagnosticar |
-| `docs/05-roadmap.md` | **Roadmap por fases hasta la v1.0 y el 3D** |
+| `docs/05-roadmap.md` | **Roadmap por fases hasta la entrega y el 3D** |
 | `docs/06-diseno-3d.md` | Plantilla para que los autores definan el 3D |
+| `docs/07-entrega-escolar.md` | Checklist de entrega, informe y demo |
 | `docs/08-riesgos-y-deuda-tecnica.md` | Riesgos y deuda técnica sin maquillaje |
 | `docs/09-preguntas-abiertas.md` | **Preguntas que los autores deben responder** |
 | `docs/10-glosario-y-referencias.md` | Glosario y bibliografía |
@@ -110,7 +112,7 @@ Empieza por el índice: [`docs/00-indice.md`](docs/00-indice.md)
 │   ├── dualidad-core/        # crate: física N rendijas, presets, muestreo — sin gráficos
 │   ├── dualidad-engine3d/    # crate: cámara, escena 3D, panel de control, HUD y gráfica
 │   └── dualidad-app/         # crate: binario `dualidad` (entrada, teclado, bucle)
-├── docs/                     # documentación, roadmap, decisiones, histórico y plantillas
+├── docs/                     # documentación, roadmap, decisiones y plantillas
 ├── LICENSE                   # GPL-3.0 (texto oficial íntegro)
 └── LICENCIAS.md              # la licencia explicada en español claro
 ```

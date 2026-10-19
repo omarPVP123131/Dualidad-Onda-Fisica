@@ -46,7 +46,7 @@ que repensarlo. Respuestas posibles (anoten la suya, no copien):
 
 **Experimento obligatorio antes de decidir:** un prototipo desechable de
 «una malla que se mueve» con la opción favorita, en una rama aparte. Si no
-corre fluido en sus máquinas, no es opción — nadie espera a renders lentos.
+corre fluido en sus máquinas, no es opción — la escuela no espera a renders lentos.
 
 ## 5. Física en 3D: ¿la misma o cambia?
 
@@ -58,7 +58,7 @@ corre fluido en sus máquinas, no es opción — nadie espera a renders lentos.
 
 | Riesgo | Mitigación acordada |
 |---|---|
-| El 3D se come el tiempo de todo lo demás | Fases del roadmap; el pulido no bloquea la v1.0 |
+| El 3D se come el tiempo del informe/entrega | Primero Fase 1–2 del roadmap; el 3D no bloquea la entrega |
 | Rendimiento (mallas que se recalculan por frame) | Prototipo de rendimiento antes de comprometer alcance |
 | Los dos editando la misma escena | Un dueño por subsistema (ver `CONTRIBUTING.md`) |
 | «Se ve increíble pero no se entiende» | Probar con un compañero: debe explicar el fenómeno tras 60 s |

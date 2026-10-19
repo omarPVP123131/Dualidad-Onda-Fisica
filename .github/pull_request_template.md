@@ -4,9 +4,9 @@
 
 ## Cómo lo probé
 
-- [ ] `Cargo fmt --check`
-- [ ] `Cargo clippy -- -D warnings`
-- [ ] `Cargo test`
+- [ ] `cargo fmt --check`
+- [ ] `cargo clippy -- -D warnings`
+- [ ] `cargo test`
 - [ ] Probé la demo a mano (incl. tecla `O`, pausa y reinicio)
 
 ## Física / documentación

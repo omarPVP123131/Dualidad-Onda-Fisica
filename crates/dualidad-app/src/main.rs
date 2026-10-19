@@ -27,6 +27,23 @@ fn seed_from_clock() -> u64 {
         .unwrap_or(0x853c_49e6_748f_ea9b)
 }
 
+/// Dispara `n` partículas y alimenta las partículas en vuelo con los
+/// impactos recién generados.
+///
+/// Se toman los `hechos` **últimos** del almacén: el núcleo conserva los
+/// impactos recientes en una ventana deslizante, así que el conteo que
+/// devuelve `shoot_many` es la vía fiable. El viejo recorte por índices
+/// `before..after` dejaba de notificar al llenarse el almacén (ADR-0005).
+fn disparar(state: &mut AppState, renderer: &mut Renderer, n: u32) {
+    let hechos = state.sim.shoot_many(&mut state.rng, n) as usize;
+    if hechos == 0 {
+        return;
+    }
+    let impactos = state.sim.impacts();
+    let desde = impactos.len().saturating_sub(hechos);
+    renderer.notify_impacts(&state.sim, &impactos[desde..]);
+}
+
 #[macroquad::main(window_conf)]
 async fn main() {
     let mut state = AppState::new(seed_from_clock());
@@ -39,27 +56,8 @@ async fn main() {
         renderer.update_camera(dt);
 
         if !state.paused {
-            let before = state.sim.impacts().len();
-            let hechas = state.sim.shoot_many(&mut state.rng, state.rate);
-            let after = state.sim.impacts().len();
-            if hechas > 0 {
-                let impactos = state.sim.impacts();
-                let nuevos = if after > before {
-                    &impactos[before..after]
-                } else if !impactos.is_empty() {
-                    // Almacén de impactos lleno: reusar los últimos
-                    // impactos almacenados para seguir alimentando
-                    // las partículas visuales sin tocar la física.
-                    let start = impactos
-                        .len()
-                        .saturating_sub(hechas as usize)
-                        .min(impactos.len());
-                    &impactos[start..]
-                } else {
-                    &[]
-                };
-                renderer.notify_impacts(&state.sim, nuevos);
-            }
+            let rate = state.rate;
+            disparar(&mut state, &mut renderer, rate);
         }
 
         clear_background(Color::new(0.03, 0.03, 0.05, 1.0));
@@ -76,27 +74,7 @@ async fn main() {
         };
         let outcome = renderer.render(&mut state.sim, &hud, dt, &mut state.rate, &mut state.paused);
         if outcome.shoot > 0 {
-            let before = state.sim.impacts().len();
-            let hechas = state.sim.shoot_many(&mut state.rng, outcome.shoot);
-            let after = state.sim.impacts().len();
-            if hechas > 0 {
-                let impactos = state.sim.impacts();
-                let nuevos = if after > before {
-                    &impactos[before..after]
-                } else if !impactos.is_empty() {
-                    // Almacén de impactos lleno: reusar los últimos
-                    // impactos almacenados para seguir alimentando
-                    // las partículas visuales sin tocar la física.
-                    let start = impactos
-                        .len()
-                        .saturating_sub(hechas as usize)
-                        .min(impactos.len());
-                    &impactos[start..]
-                } else {
-                    &[]
-                };
-                renderer.notify_impacts(&state.sim, nuevos);
-            }
+            disparar(&mut state, &mut renderer, outcome.shoot);
         }
 
         next_frame().await

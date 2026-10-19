@@ -26,6 +26,8 @@ pub struct Simulation {
     histogram: Histogram,
     impacts: Vec<Impact>,
     /// Máximo de impactos conservados para dibujar (la cuenta no se detiene).
+    /// Al alcanzarlo se conservan los **más recientes**: la ventana se
+    /// desliza y los impactos nuevos nunca dejan de almacenarse.
     pub max_stored_impacts: usize,
 }
 
@@ -36,8 +38,11 @@ impl Default for Simulation {
 }
 
 impl Simulation {
-    /// Tope histórico del prototipo: protege la memoria y el dibujo.
+    /// Tope de impactos conservados para dibujar (la cuenta no se detiene).
     pub const DEFAULT_MAX_STORED: usize = 40_000;
+    /// Bloque de recorte del almacén: al llegar al tope se descartan los
+    /// impactos más antiguos de golpe, no uno a uno (amortiza el coste).
+    pub const TRIM_CHUNK: usize = 1_024;
     /// Cota de intentos por impacto: evita bucles infinitos si `I(x)`
     /// fuera casi cero en casi toda la pantalla.
     const MAX_ATTEMPTS: usize = 100_000;
@@ -88,8 +93,14 @@ impl Simulation {
                     v: rng.next_f64(),
                 };
                 self.histogram.record(impact.u);
-                if self.impacts.len() < self.max_stored_impacts {
-                    self.impacts.push(impact);
+                // Ventana deslizante: al llenarse se sueltan los impactos
+                // más antiguos (ya contados en el histograma) para que los
+                // recientes siempre entren. Congelarse aquí dejaba a la
+                // pantalla y a las partículas sin datos nuevos.
+                self.impacts.push(impact);
+                if self.impacts.len() >= self.max_stored_impacts + Self::TRIM_CHUNK {
+                    let recorte = self.impacts.len() - self.max_stored_impacts;
+                    self.impacts.drain(..recorte);
                 }
                 return Some(impact);
             }
@@ -158,5 +169,34 @@ mod tests {
         sim.reset();
         assert_eq!(sim.total(), 0);
         assert!(sim.impacts().is_empty());
+    }
+
+    #[test]
+    fn la_ventana_sigue_guardando_los_impactos_recientes() {
+        // Con el almacén «saturado» (mucho más disparos que el tope), los
+        // impactos nuevos deben seguir entrando: si no, la pantalla y las
+        // partículas en vuelo se quedan sin datos (ADR-0005).
+        let mut sim = Simulation {
+            max_stored_impacts: 500,
+            ..Default::default()
+        };
+        let mut rng = SplitMix64::new(3);
+        sim.shoot_many(&mut rng, 3_000);
+        assert_eq!(sim.total(), 3_000);
+        let tope = 500 + Simulation::TRIM_CHUNK;
+        let len = sim.impacts().len();
+        assert!(len > 0 && len <= tope, "len={len} tope={tope}");
+
+        // El impacto recién disparado siempre se guarda.
+        let siguiente = sim.shoot_one(&mut rng).expect("siempre hay impacto");
+        assert_eq!(sim.impacts().last(), Some(&siguiente));
+        assert_eq!(sim.total(), 3_001);
+
+        // Y la ventana se desliza: los más antiguos salen al llenarse.
+        let primero = sim.impacts()[0];
+        sim.shoot_many(&mut rng, Simulation::TRIM_CHUNK as u32 + 1);
+        assert_ne!(sim.impacts()[0], primero, "los antiguos deben salir");
+        assert!(sim.impacts().len() <= tope);
+        assert_eq!(sim.total(), 3_001 + Simulation::TRIM_CHUNK as u64 + 1);
     }
 }

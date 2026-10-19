@@ -4,41 +4,42 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 Las versiones siguen [Versionado Semántico](https://semver.org/lang/es/) cuando
 el proyecto empiece a publicarlas.
 
-## [Sin publicar] — Proyecto personal (se retira el flujo escolar)
+## [Sin publicar]
 
-### Cambiado
+### Añadido
 
-- El proyecto se declara **personal**: se elimina todo el flujo escolar
-  (entrega, informe, docente, rúbrica, exposición).
-- Se retiran `docs/07-entrega-escolar.md` y
-  `docs/plantillas/informe-escolar.md`; README, índice, visión, roadmap,
-  riesgos, glosario, licencias, ADR-0003 y código de conducta quedan sin
-  referencias escolares.
-- `ESTADO-DEL-PROYECTO.md`: la fila de CI pasa a «activa» (lo estaba desde
-  v0.3.0), se retira la fila de entrega escolar y se reescriben los
-  siguientes pasos.
-- Licencia: retirada la salvedad «si el docente exige otra» (no hay
-  requisito externo).
+- **División de la partícula en las rendijas**: sin detector, el vuelo se
+  dibuja dividiéndose en todas las rendijas (cabeza → barrera → ramas) y
+  todas las ramas convergen en el mismo impacto; con el detector *which-path*
+  se dibuja un único camino definido (ADR-0007).
 
-### Código
+### Mejorado (rendimiento)
 
-- Solo un comentario en `crates/dualidad-engine3d/src/quality.rs`
-  («típicas en escuelas» → «equipos modestos incluidos»). Nada funcional.
+- **Geometría 3D agrupada en lotes** (`batch.rs`, ADR-0008): la escena
+  estática se cachea en mallas y solo se rehace si cambia λ, `d`, `a` o el
+  nivel (antes ~300 subidas de geometría por frame); los contornos, frentes
+  y perfil de onda viajan como cintas en un solo lote (antes ~1 550 líneas
+  sueltas); las partículas usan dos lotes por frame (antes hasta ~480
+  primitivas, con esferas de ~256 triángulos en Alta — ahora un disco
+  orientado a la cámara de 8 triángulos, misma silueta).
+- **Impactos con anillo incremental** (ADR-0008): cada impacto nuevo escribe
+  su ranura en O(1); la malla ya no se reconstruye entera cada 25 impactos
+  ni al deslizarse la ventana del almacén, y la pantalla se actualiza al
+  instante. El cambio de λ repinta en su sitio, sin reasignar mallas.
 
-## [Sin publicar] — Reorganización de estructura (crates/)
+### Corregido
 
-Sin cambios de código: solo ubicaciones de archivos y documentación.
-
-### Cambiado
-
-- Los tres crates del workspace se movieron de `src/dualidad-*` a
-  `crates/dualidad-*`, la convención de la comunidad Rust para workspaces.
-  Renames 100 % idénticos por git; `cargo test --workspace` sigue en verde.
-- El prototipo congelado `src/main.rs` se archivó en
-  `docs/historico/main-original-v0.1.0.rs` (contenido byte por byte intacto;
-  el SHA-256 de `ESTADO-DEL-PROYECTO.md` sigue siendo válido).
-- `docs/03-arquitectura-actual.md` y el árbol del README reflejan la nueva
-  ubicación; el conteo real de tests queda en 41.
+- **Las partículas ya no se quedan a media trayectoria**: con el búfer lleno
+  se omiten impactos, pero ningún vuelo en curso se recicla — antes se
+  eliminaba el más antiguo en pleno vuelo y, según fps/calidad/ritmo, moría
+  cerca de las rendijas («a veces ni llegaban») o antes de la pantalla.
+- **Flujo sin congelarse**: el almacén de impactos es ahora una ventana
+  deslizante (ADR-0007; sustituye a la opción A de ADR-0005): los impactos
+  recientes siempre entran y la malla de la pantalla se sincroniza con cada
+  impacto nuevo (anillo incremental, ADR-0008), también tras llenarse el
+  almacén.
+- **Los sliders físicos ya no reinician el experimento al arrastrarlos**
+  (restituido ADR-0006) ni borran los vuelos en curso.
 
 ## [0.7.0] — 2026-10-17 — WASD, scrollbar y bugs corregidos
 
