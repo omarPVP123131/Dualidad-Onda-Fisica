@@ -18,6 +18,7 @@ Todo lo demás es consulta.
 | — | [Decisiones (ADR)](decisiones/) | Registrar o consultar una decisión |
 | — | [Plantillas](plantillas/) | Informe escolar y CI propuestos |
 | — | [Histórico](historico/README-original-v0.1.0.md) | Ver el README tal como estaba en el prototipo |
+| — | [Notas de versión](releases/v1.0.0.md) | Consultar qué incluye la versión estable actual |
 
 **Convención:** los documentos describen el estado real. Si el código cambia,
 el documento afectado se actualiza en el mismo Pull Request (`CONTRIBUTING.md`).

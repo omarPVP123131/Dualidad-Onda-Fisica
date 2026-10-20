@@ -23,6 +23,8 @@ struct Fonts {
 }
 
 thread_local! {
+    // El inicializador ya es `const`; clippy 1.99 lo señala igualmente.
+    #[allow(clippy::missing_const_for_thread_local)]
     static FONTS: RefCell<Option<Fonts>> = const { RefCell::new(None) };
 }
 

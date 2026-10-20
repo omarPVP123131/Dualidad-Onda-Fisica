@@ -1,6 +1,6 @@
 # Estado del proyecto — tablero honesto
 
-Última actualización: 2026-10-16 (formalización del workspace).
+Última actualización: 2026-10-19 (preparación de la release v1.0.0).
 **Responsables de mantenerlo al día: los autores.** Actualícenlo en cada avance;
 este archivo vale si refleja la realidad, no el deseo.
 
@@ -9,13 +9,13 @@ este archivo vale si refleja la realidad, no el deseo.
 | Área | Estado | Nota |
 |---|---|---|
 | Prototipo 2D (física + visual) | ✅ Funcional | v0.1.0, código congelado en esta entrega |
-| Código (estructura) | ✅ Por crates | Workspace: `dualidad-core` + `dualidad-engine3d` + `dualidad-app`; 31 tests en verde |
-| Documentación | ✅ Formalizada | Visión, física, arquitectura, roadmap, entrega, riesgos |
-| Roadmap | ✅ Definido | `docs/05-roadmap.md` — la fase 3D falta **definirla**, no ejecutarla |
-| Motor 3D + UI | 🟢 v0.3 | Escena rica, panel CONTROL por ratón, presets fotón/electrón, 1–8 rendijas, capas, vistas y presentación; CI activa y GIF en el README |
+| Código (estructura) | ✅ Por crates | Workspace: `dualidad-core` + `dualidad-engine3d` + `dualidad-app`; 55 tests en verde |
+| Documentación | ✅ Formalizada | Visión, física, arquitectura, roadmap, entrega, riesgos y notas de versión |
+| Roadmap | ✅ Definido | `docs/05-roadmap.md` — fase 3 implementada; fase 4 (pulido y 1.0) en cierre |
+| Motor 3D + UI | ✅ v1.0.0 | Escena rica, panel CONTROL por ratón, presets fotón/electrón, 1–8 rendijas, capas, vistas y presentación; CI activa y GIF en el README |
 | Licencia | ✅ Decidida | **GPL-3.0-or-later** — una sola licencia en `LICENSE` (ADR-0003) |
 | Entrega escolar | 🔴 Sin fecha confirmada | Completar `docs/07-entrega-escolar.md` cuanto antes |
-| CI / tests automáticos | 🔴 Sin activar | Plantilla propuesta en `docs/plantillas/ci.yml` |
+| CI / tests automáticos | ✅ Activa | fmt + clippy + tests + build y humo de arranque en `.github/workflows/ci.yml` |
 
 ## Qué se hizo en la formalización (y qué no)
 

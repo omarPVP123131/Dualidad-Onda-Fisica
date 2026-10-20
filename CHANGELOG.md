@@ -1,10 +1,13 @@
 # Registro de cambios (Changelog)
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
-Las versiones siguen [Versionado Semántico](https://semver.org/lang/es/) cuando
-el proyecto empiece a publicarlas.
+Las versiones siguen [Versionado Semántico](https://semver.org/lang/es/).
 
-## [Sin publicar]
+## [1.0.0] — 2026-10-19 — Primera versión estable
+
+Primera versión estable del simulador. Cierra el ciclo abierto en 0.7.0 con
+trayectorias completas, la división de la partícula en las rendijas y las
+mejoras de rendimiento que permiten sesiones largas sin perder impactos.
 
 ### Añadido
 
@@ -166,7 +169,7 @@ Corrección de los fallos reportados en uso real y las dos mejoras pedidas.
   reescribió dividido por responsabilidades. La física (Fraunhofer con
   detector which-path), los controles y los rangos se conservaron.
 
-## [Sin publicar] — Formalización del workspace
+## Formalización del workspace (pre-0.1.0)
 
 ### Agregado
 - Documentación completa en `docs/`: visión, física, arquitectura actual,

@@ -70,7 +70,7 @@ dependencies = [
 
 [[package]]
 name = "dualidad-app"
-version = "0.7.0"
+version = "1.0.0"
 dependencies = [
  "dualidad-core",
  "dualidad-engine3d",
@@ -79,11 +79,11 @@ dependencies = [
 
 [[package]]
 name = "dualidad-core"
-version = "0.7.0"
+version = "1.0.0"
 
 [[package]]
 name = "dualidad-engine3d"
-version = "0.7.0"
+version = "1.0.0"
 dependencies = [
  "dualidad-core",
  "macroquad",

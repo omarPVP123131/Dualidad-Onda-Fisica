@@ -3,11 +3,12 @@
 Simulador interactivo del **experimento de la doble rendija**: partículas disparadas
 **una por una** que, al acumularse, forman un patrón de interferencia ondulatorio.
 
-> **Estado del proyecto:** v0.6.0 en desarrollo — motor 3D con panel de
+> **Estado del proyecto:** **v1.0.0 (estable)** — motor 3D con panel de
 > control por ratón, presets de partículas (fotón/electrón de Broglie),
 > 1–8 rendijas, capas, cámara libre con zoom suave y modo presentación.
 > CI activa.
-> Consulta el estado real en [`docs/05-roadmap.md`](docs/05-roadmap.md).
+> Consulta el estado real en [`docs/05-roadmap.md`](docs/05-roadmap.md) y las
+> notas de la versión en [`docs/releases/v1.0.0.md`](docs/releases/v1.0.0.md).
 
 Repositorio original: [omarPVP123131/Dualidad-Onda-Fisica](https://github.com/omarPVP123131/Dualidad-Onda-Fisica)
 
@@ -21,7 +22,7 @@ Repositorio original: [omarPVP123131/Dualidad-Onda-Fisica](https://github.com/om
 Proyecto escolar/universitario. Materia, institución, grupo y docente: **por completar**
 en [`docs/07-entrega-escolar.md`](docs/07-entrega-escolar.md).
 
-## Qué hace hoy (v0.3.0)
+## Qué hace hoy (v1.0.0)
 
 - **Escena 3D orbitable** (macroquad 3D): fuente, barrera con dos rendijas,
   sensores del detector y pantalla en un laboratorio virtual.
@@ -42,7 +43,7 @@ en [`docs/07-entrega-escolar.md`](docs/07-entrega-escolar.md).
   modo guiado opcional para no perder el experimento de cuadro.
 - Capas activables, órbita cinemática, **modo presentación** (`H` o
   botón) y teclado completo como respaldo.
-- Física sin dependencias gráficas: el núcleo es testeable sin abrir ventana (41 tests).
+- Física sin dependencias gráficas: el núcleo es testeable sin abrir ventana (55 tests).
 
 La explicación física completa está en [`docs/02-fisica.md`](docs/02-fisica.md).
 **En esta formalización no se modificó la física ni el código.**
