@@ -3,6 +3,10 @@
 //! Este binario solo pega las piezas:
 //! `dualidad-core` (física y simulación) + `dualidad-engine3d` (escena).
 
+// En release no se abre consola en Windows: la app queda como única ventana.
+// En debug se conserva para ver logs y mensajes de pánico.
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 mod input;
 mod state;
 
